@@ -7,27 +7,24 @@ import Button from '@/components/Button';
 
 const Register = () => {
     return (
-        <AccountLayout
-            title="Register"
-            children={
-                <div className="w-[500px]">
-                    <form action="" method="post">
-                        <div className="flex gap-3 flex-col">
-                            <div className="grid grid-cols-2 gap-4">
-                                <LabelWithInput title="First Name" />
-                                <LabelWithInput title="Last Name" />
-                            </div>
-                            <LabelWithInput title="Email" type="email" />
-                            <LabelWithInput title="Password" />
-                            <LabelWithInput title="Repeat Password" />
+        <AccountLayout title="Register">
+            <div className="w-[500px]">
+                <form action="" method="post">
+                    <div className="flex gap-3 flex-col">
+                        <div className="grid grid-cols-2 gap-4">
+                            <LabelWithInput title="First Name" />
+                            <LabelWithInput title="Last Name" />
                         </div>
-                        <div className="mt-8 mb-2">
-                            <Button title="Register" onClick={() => {}} />
-                        </div>
-                    </form>
-                </div>
-            }
-        />
+                        <LabelWithInput title="Email" type="email" />
+                        <LabelWithInput title="Password" />
+                        <LabelWithInput title="Repeat Password" />
+                    </div>
+                    <div className="mt-8 mb-2">
+                        <Button title="Register" onClick={() => {}} />
+                    </div>
+                </form>
+            </div>
+        </AccountLayout>
     );
 };
 
