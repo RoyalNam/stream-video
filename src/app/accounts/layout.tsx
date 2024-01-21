@@ -1,9 +1,9 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 
-type AccountLayoutProps = {
-    children: ReactNode;
+interface AccountLayoutProps {
+    children: React.ReactNode;
     title: string;
-};
+}
 
 const AccountLayout: React.FC<AccountLayoutProps> = ({ children, title }) => {
     return (
