@@ -109,14 +109,9 @@ const SingleMovie = () => {
                                         ))}
                                 </span>
                             </div>
-
                             <span>
                                 Date:
-                                {movieDetail &&
-                                    new Date(movieDetail?.release_date)
-                                        .toDateString()
-                                        .toString()
-                                        .replace(/'/g, '&apos;')}
+                                {movieDetail && new Date(movieDetail?.release_date).toDateString().toString()}
                             </span>
                             <div className="flex gap-2">
                                 <span>Rate:</span>
@@ -244,8 +239,8 @@ const ReviewItem = ({ item }: { item: MovieReviewProps }) => {
                 <span>{item.author_details.rating ? item.author_details.rating : '_'}</span>
                 <FaStar />
             </div>
-            <div>
-                <span>{new Date('2021-06-23T15:57:47.190Z').toLocaleString()}</span>
+            <div className="min-w-48">
+                <span>{new Date(item.updated_at).toLocaleString()}</span>
                 <Link href={'#'}>
                     <h4 className="hover:underline">by {item.author}</h4>
                 </Link>
