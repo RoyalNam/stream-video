@@ -1,19 +1,24 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import Slider from 'react-slick';
+import { useRouter } from 'next/navigation';
 
 import VideoCart from '@/components/VideoCart';
 import SliderVideo from '@/components/SliderVideo';
-import VideoBlock from '@/components/VideoBlock';
 import { getMovieTrending } from '@/service/trending';
-import { getMovieNowPlaying, getMoviePopular, getMovieTopRated, getMovieUpcoming } from '@/service/movie';
+import { getMovieWithEndpoint, getMoviesByCategory } from '@/service/movie';
+import Button from '@/components/Button';
 
 export default function Home() {
+    const router = useRouter();
+
     const [trendingData, setTrendingData] = useState<MovieBaseProps[]>([]);
     const [nowPlayingData, setNowPlaying] = useState<MovieBaseProps[]>([]);
     const [popularData, setPopular] = useState<MovieBaseProps[]>([]);
     const [topRatedData, setTopRated] = useState<MovieBaseProps[]>([]);
     const [upComingData, setUpcoming] = useState<MovieBaseProps[]>([]);
+    const [movie, setMovie] = useState<VideoProps>();
+    const [isShow, setShow] = useState(false);
 
     const sliderSettings = {
         infinite: true,
@@ -29,6 +34,7 @@ export default function Home() {
         speed: 500,
         nextArrow: <SampleNextArrow />,
         prevArrow: <SamplePrevArrow />,
+        slidesToScroll: 3,
         responsive: [
             {
                 breakpoint: 1280,
@@ -46,69 +52,96 @@ export default function Home() {
                 breakpoint: 768,
                 settings: {
                     slidesToShow: 2,
+                    slidesToScroll: 2,
                 },
             },
             {
                 breakpoint: 640,
                 settings: {
                     slidesToShow: 1,
+                    slidesToScroll: 1,
                 },
             },
         ],
         slidesToShow: 5,
     };
-    const fetchData = async (apiFunction: () => Promise<any>) => {
-        try {
-            const response = await apiFunction();
-            return response.results;
-        } catch (error) {
-            console.error('Error fetching data:', error);
-            return [];
-        }
-    };
 
     useEffect(() => {
-        const fetchAllData = async () => {
-            setTrendingData(await fetchData(getMovieTrending));
-            setNowPlaying(await fetchData(getMovieNowPlaying));
-            setPopular(await fetchData(getMoviePopular));
-            setTopRated(await fetchData(getMovieTopRated));
-            setUpcoming(await fetchData(getMovieUpcoming));
-        };
         fetchAllData();
     }, []);
-    console.log(trendingData);
 
-    const renderVideoBlock = (title: string, data: MovieBaseProps[]) => (
-        <VideoBlock tit={title}>
-            <Slider {...blockSettings}>
-                {data.map((item) => (
-                    <div key={item.id} className="px-2">
-                        <VideoCart item={item} />
+    const fetchAllData = async () => {
+        setTrendingData(await getMovieTrending());
+        setNowPlaying(await getMoviesByCategory({ type: 'now_playing' }));
+        setPopular(await getMoviesByCategory({ type: 'popular' }));
+        setTopRated(await getMoviesByCategory({ type: 'top_rated' }));
+        setUpcoming(await getMoviesByCategory({ type: 'upcoming' }));
+    };
+
+    const handleGetTrailer = async (id: number = 558915) => {
+        setShow(true);
+        const videos = await getMovieWithEndpoint({ endpoint: 'videos', movie_id: Number(id) });
+        setMovie(videos.results[0]);
+    };
+
+    const renderVideoBlock = (title: string, data: MovieBaseProps[]) => {
+        const newTit = title.toLowerCase().split(' ').join('_');
+        return (
+            <div className="max-w-full">
+                <div className="flex justify-between items-center my-3">
+                    <h4 className="text-2xl font-semibold text-white capitalize">{title}</h4>
+                    <Button title="Load more" onClick={() => router.push(`/movies/movies-list/${newTit}`)} />
+                </div>
+                <div className="-mx-2">
+                    {
+                        <Slider {...blockSettings}>
+                            {data.map((item) => (
+                                <div key={item.id} className="px-2">
+                                    <VideoCart item={item} />
+                                </div>
+                            ))}
+                        </Slider>
+                    }
+                </div>
+            </div>
+        );
+    };
+    const renderTrailer = () => {
+        return (
+            <div onClick={() => setShow(false)} className="fixed inset-0 bg-black/70 z-50">
+                <div className="flex items-center justify-center w-full h-full">
+                    <div className="w-full max-w-[900px] z-10 aspect-video">
+                        <iframe
+                            title="Video"
+                            src={movie && `https://www.youtube.com/embed/${movie.key}`}
+                            frameBorder="0"
+                            allowFullScreen
+                            className="w-full h-full"
+                        />
                     </div>
-                ))}
-            </Slider>
-        </VideoBlock>
-    );
+                </div>
+            </div>
+        );
+    };
 
     return (
         <div className="w-full">
-            {/* Slider for Trending */}
             <div className="w-full">
                 <Slider {...sliderSettings}>
                     {trendingData.map((item) => (
-                        <SliderVideo key={item.id} item={item} />
+                        <SliderVideo key={item.id} item={item} handleWatchTrailer={() => handleGetTrailer(item.id)} />
                     ))}
                 </Slider>
             </div>
 
-            {/* Video Blocks */}
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-6 mt-8 pb-12">
+                {renderVideoBlock('Trending', trendingData)}
                 {renderVideoBlock('Now Playing', nowPlayingData)}
                 {renderVideoBlock('Popular', popularData)}
                 {renderVideoBlock('Top rated', topRatedData)}
                 {renderVideoBlock('Upcoming', upComingData)}
             </div>
+            {isShow && movie && renderTrailer()}
         </div>
     );
 }

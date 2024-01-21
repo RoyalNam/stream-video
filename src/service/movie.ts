@@ -10,95 +10,71 @@ const options = {
     },
 };
 
-export const getMovieDetail = async ({ video_id }: { video_id: number }) => {
+export const getMovieDetail = async ({ movie_id }: { movie_id: number }) => {
     try {
-        const response = await axios.get(`${VIDEO_BASE_URL}/${video_id}`, options);
-        return response.data;
-    } catch (err) {
-        throw err;
-    }
-};
-export const getMovieCredits = async ({ video_id }: { video_id: number }) => {
-    try {
-        const response = await axios.get(`${VIDEO_BASE_URL}/${video_id}/credits`, options);
-        return response.data;
-    } catch (err) {
-        throw err;
-    }
-};
-export const getMovieKeywords = async ({ video_id }: { video_id: number }) => {
-    try {
-        const response = await axios.get(`${VIDEO_BASE_URL}/${video_id}/keywords`, options);
+        const response = await axios.get(`${VIDEO_BASE_URL}/${movie_id}`, options);
         return response.data;
     } catch (err) {
         throw err;
     }
 };
 
-export const getMovieReviews = async ({ video_id, page_number = 1 }: { video_id: number; page_number: number }) => {
+export const getMovieWithEndpoint = async ({
+    movie_id,
+    endpoint,
+    page_number = 1,
+}: {
+    movie_id: number;
+    endpoint: MovieEndpoint;
+    page_number?: number;
+}) => {
     try {
-        const response = await axios.get(`${VIDEO_BASE_URL}/${video_id}/reviews?page=${page_number}`, options);
-        return response.data;
-    } catch (err) {
-        throw err;
-    }
-};
-export const getMovieSimilar = async ({ video_id, page_number = 1 }: { video_id: number; page_number?: number }) => {
-    try {
-        const response = await axios.get(`${VIDEO_BASE_URL}/${video_id}/similar?page=${page_number}`, options);
-        return response.data;
+        const response = await axios.get(`${VIDEO_BASE_URL}/${movie_id}/${endpoint}?page=${page_number}`, options);
+
+        switch (endpoint) {
+            case 'reviews':
+            case 'similar':
+                return response.data.results;
+            case 'credits':
+            case 'keywords':
+            case 'translations':
+            case 'videos':
+                return response.data;
+            default:
+                throw new Error('invalid endpoint');
+        }
     } catch (err) {
         throw err;
     }
 };
 
-export const getMovieTranslations = async ({ video_id }: { video_id: number }) => {
+export const getMoviesByCategory = async ({ type, page_number = 1 }: { type: MovieCategory; page_number?: number }) => {
     try {
-        const response = await axios.get(`${VIDEO_BASE_URL}/${video_id}/translations`, options);
-        return response.data;
+        const response = await axios.get(`${VIDEO_BASE_URL}/${type}?page=${page_number}`, options);
+        return response.data.results;
     } catch (err) {
         throw err;
     }
 };
-export const getMovieVideos = async ({ video_id }: { video_id: number }) => {
-    try {
-        const response = await axios.get(`${VIDEO_BASE_URL}/${video_id}/videos`, options);
-        return response.data;
-    } catch (err) {
-        throw err;
-    }
+const defaultOptions: DiscoverOptions = {
+    include_adult: false,
+    language: 'en-US',
+    page: 1,
 };
-export const getMovieNowPlaying = async () => {
+
+export const getMoviesDiscover = async (discoverOptions: DiscoverOptions = {}) => {
     try {
-        const response = await axios.get(`${VIDEO_BASE_URL}/now_playing`, options);
-        return response.data;
-    } catch (err) {
-        throw err;
-    }
-};
-export const getMoviePopular = async () => {
-    try {
-        const response = await axios.get(`${VIDEO_BASE_URL}/popular`, options);
-        return response.data;
-    } catch (err) {
-        throw err;
-    }
-};
-export const getMovieTopRated = async () => {
-    try {
-        const response = await axios.get(`${VIDEO_BASE_URL}/top_rated`, options);
-        return response.data;
-    } catch (err) {
-        throw err;
-    }
-};
-export const getMovieUpcoming = async () => {
-    try {
-        const response = await axios.get(`${VIDEO_BASE_URL}/upcoming`, options);
-        return response.data;
+        const mergedOptions = { ...defaultOptions, ...discoverOptions };
+
+        const apiUrl = `${BASE_URL}/discover/movie`;
+        const response = await axios.get(apiUrl, { params: mergedOptions, headers: options.headers });
+        return response.data.results;
     } catch (err) {
         throw err;
     }
 };
 
 // Add, delete rating
+// Type
+export type MovieCategory = 'now_playing' | 'popular' | 'top_rated' | 'upcoming';
+export type MovieEndpoint = 'credits' | 'keywords' | 'reviews' | 'similar' | 'translations' | 'videos';

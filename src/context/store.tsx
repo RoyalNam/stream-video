@@ -1,19 +1,27 @@
 'use client';
-import { getGenres } from '@/service/genres';
+import { getCertification, getGenres } from '@/service/genres';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
-const GenresLocalStorageDataContext = createContext<GenresProps[]>([]);
+interface LocalStorageData {
+    genresData: GenresProps[];
+    certificationData: CertificationProps[];
+}
 
-export const LocalStorageDataProvider = ({ children }: { children: React.ReactNode }) => {
-    const [genresData, setGenresData] = useState<GenresProps[]>([]);
+const LocalStorageDataContext = createContext<LocalStorageData | undefined>(undefined);
+
+export const LocalStorageDataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+    const [localStorageData, setLocalStorageData] = useState<LocalStorageData>({
+        genresData: [],
+        certificationData: [],
+    });
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const movieGenresResponse = await getGenres();
-
-                const movieGenres = movieGenresResponse.genres ? movieGenresResponse.genres : [];
-                setGenresData(movieGenres);
+                setLocalStorageData({
+                    genresData: await getGenres(),
+                    certificationData: await getCertification(),
+                });
             } catch (error) {
                 console.error('Error fetching data from localStorage:', error);
             }
@@ -22,17 +30,31 @@ export const LocalStorageDataProvider = ({ children }: { children: React.ReactNo
         fetchData();
     }, []);
 
-    return (
-        <GenresLocalStorageDataContext.Provider value={genresData}>{children}</GenresLocalStorageDataContext.Provider>
-    );
+    return <LocalStorageDataContext.Provider value={localStorageData}>{children}</LocalStorageDataContext.Provider>;
 };
 
-export const useGenresLocalStorageData = (): GenresProps[] | [] => {
-    const genresData = useContext(GenresLocalStorageDataContext);
+export const useLocalStorageData = (): LocalStorageData | undefined => {
+    const localStorageData = useContext(LocalStorageDataContext);
 
     useEffect(() => {
-        // console.log('storeGenres', genresData);
-    }, [genresData]);
+        // console.log('localStorageData', localStorageData);
+    }, [localStorageData]);
 
-    return genresData;
+    return localStorageData;
+};
+
+export const useGenresOrCertificationData = <T extends GenresProps | CertificationProps>(
+    getGenresData: boolean = true,
+): T[] | undefined => {
+    const localStorageData = useLocalStorageData();
+
+    useEffect(() => {
+        // console.log('localStorageData', localStorageData);
+    }, [localStorageData]);
+
+    return localStorageData
+        ? getGenresData
+            ? (localStorageData.genresData as T[])
+            : (localStorageData.certificationData as T[])
+        : undefined;
 };
