@@ -109,8 +109,9 @@ const SingleMovie = () => {
                                         ))}
                                 </span>
                             </div>
+
                             <span>
-                                Date:{' '}
+                                Date:
                                 {movieDetail &&
                                     new Date(movieDetail?.release_date)
                                         .toDateString()
