@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { FaStar } from 'react-icons/fa';
+import Image from 'next/image';
 import Button from '@/components/Button';
 import ErrorDisplay from '@/components/ErrorDisplay';
 import MoviesGrid from '@/components/MoviesGrid';
@@ -108,7 +109,14 @@ const SingleMovie = () => {
                                         ))}
                                 </span>
                             </div>
-                            <p>Date: {movieDetail && new Date(movieDetail?.release_date).toDateString().toString()}</p>
+                            <span>
+                                Date:{' '}
+                                {movieDetail &&
+                                    new Date(movieDetail?.release_date)
+                                        .toDateString()
+                                        .toString()
+                                        .replace(/'/g, '&apos;')}
+                            </span>
                             <div className="flex gap-2">
                                 <span>Rate:</span>
                                 <div className="flex items-center gap-1 text-yellow-500 ">

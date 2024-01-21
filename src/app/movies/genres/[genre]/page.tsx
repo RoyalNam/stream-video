@@ -19,7 +19,7 @@ const MovieGenrePage = () => {
     useEffect(() => {
         const fetchInitialData = async () => {
             if (!GENRES || GENRES.length === 0) {
-                const genresData = await useGenresOrCertificationData<GenresProps>();
+                const genresData = await GENRES;
                 if (genresData) {
                     setMoviesData(await fetchData());
                 }
