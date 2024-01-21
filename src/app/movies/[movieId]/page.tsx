@@ -183,7 +183,7 @@ const SingleMovie = () => {
                         </div>
                     ) : (
                         <div className="my-2">
-                            <h5>We don't have any reviews for {movieDetail?.title}.</h5>
+                            <h5>We don&apos;t have any reviews for {movieDetail?.title}.</h5>
                         </div>
                     ))}
             </div>
@@ -240,7 +240,7 @@ const ReviewItem = ({ item }: { item: MovieReviewProps }) => {
                 <FaStar />
             </div>
             <div className="min-w-48">
-                <span>{new Date(item.updated_at).toLocaleString()}</span>
+                <span>{new Date(item.updated_at).toLocaleString().toString()}</span>
                 <Link href={'#'}>
                     <h4 className="hover:underline">by {item.author}</h4>
                 </Link>
