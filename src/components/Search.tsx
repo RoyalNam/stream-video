@@ -123,7 +123,10 @@ const Search = () => {
                         </div>
                     ) : (
                         <div className="border-t border-white/20 p-2">
-                            <p>No results found for "{inputRef.current?.value}". Please try a different search term.</p>
+                            <p>
+                                No results found for &quot;{inputRef.current?.value}&quot;. Please try a different
+                                search term.
+                            </p>
                         </div>
                     ))}
             </div>
