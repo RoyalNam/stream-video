@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import Slider from 'react-slick';
 import { useRouter } from 'next/navigation';
-
 import VideoCart from '@/components/VideoCart';
 import SliderVideo from '@/components/SliderVideo';
 import { getMovieTrending } from '@/service/trending';
@@ -108,7 +107,13 @@ export default function Home() {
     };
     const renderTrailer = () => {
         return (
-            <div onClick={() => setShow(false)} className="fixed inset-0 bg-black/70 z-50">
+            <div
+                onClick={() => {
+                    setShow(false);
+                    setMovie(undefined);
+                }}
+                className="fixed inset-0 bg-black/70 z-50"
+            >
                 <div className="flex items-center justify-center w-full h-full">
                     <div className="w-full max-w-[900px] z-10 aspect-video">
                         <iframe

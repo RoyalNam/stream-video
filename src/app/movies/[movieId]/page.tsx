@@ -75,7 +75,7 @@ const SingleMovie = () => {
     const tabs = ['info', 'cast', 'reviews'];
     const renderMovieDetails = (
         <div className="py-6">
-            <div className="text-xl font-medium flex gap-2 border-b py-2">
+            <div className="text-xl font-medium flex gap-2 border-b border-primary/50 py-2">
                 {tabs.map((item) => (
                     <button
                         key={item}
@@ -192,7 +192,7 @@ const SingleMovie = () => {
 
     const renderSimilarMovies = (
         <div className="my-4">
-            <span className="text-3xl capitalize font-medium border-primary py-1 border-b-2">More like this</span>
+            <span className="text-3xl capitalize font-semibold border-primary/50 border-b-2">More like this</span>
             {moviesSimilar.length !== 0 ? (
                 <>
                     <MoviesGrid movies={moviesSimilar} />

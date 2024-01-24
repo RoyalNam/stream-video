@@ -60,7 +60,7 @@ const MovieGenrePage = () => {
                     setError(null);
                 }
 
-                return await getMoviesDiscover({ with_genres: id.toString(), page: page_number });
+                return await getMoviesDiscover({ discoverOptions: { with_genres: id.toString(), page: page_number } });
             }
 
             return [];

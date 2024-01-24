@@ -3,8 +3,11 @@
 import React from 'react';
 import LabelWithInput from '@/components/LabelWithInput';
 import Button from '@/components/Button';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const Register = () => {
+    const router = useRouter();
     return (
         <div className="absolute top-0 bottom-0 left-0 right-0 bg-[url('/bg.jpeg')] z-50 w-full h-full">
             <div className="flex flex-1 w-full h-full justify-center items-center">
@@ -17,16 +20,27 @@ const Register = () => {
                     <div className="w-[500px]">
                         <form action="" method="post">
                             <div className="flex gap-3 flex-col">
-                                <div className="grid grid-cols-2 gap-4">
-                                    <LabelWithInput title="First Name" />
-                                    <LabelWithInput title="Last Name" />
-                                </div>
+                                <LabelWithInput title="Username" />
                                 <LabelWithInput title="Email" type="email" />
-                                <LabelWithInput title="Password" />
-                                <LabelWithInput title="Repeat Password" />
+                                <LabelWithInput title="Password" type="password" />
+                                <LabelWithInput title="Repeat Password" type="password" />
                             </div>
-                            <div className="mt-8 mb-2">
-                                <Button title="Register" onClick={() => {}} />
+                            <div className="mt-8 mb-2 flex gap-4">
+                                <Button
+                                    title="Register"
+                                    onClick={() => {
+                                        router.push('/');
+                                    }}
+                                />
+                                <div className="flex items-center gap-4">
+                                    <span>or</span>
+                                    <Link
+                                        className="underline hover:text-primary block uppercase text-lg"
+                                        href={'/accounts/login'}
+                                    >
+                                        Login
+                                    </Link>
+                                </div>
                             </div>
                         </form>
                     </div>

@@ -9,6 +9,7 @@ import 'tippy.js/dist/tippy.css';
 import Navbar from '@/components/Navbar';
 import { LocalStorageDataProvider } from '@/context/store';
 import ScrollToTopButton from '@/components/ScrollToTopButton';
+import Footer from '@/components/Footer';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -26,6 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                         <Navbar />
                         <main className="w-full max-w-8xl mx-auto px-4">{children}</main>
                         <ScrollToTopButton />
+                        <Footer />
                     </div>
                 </LocalStorageDataProvider>
             </body>

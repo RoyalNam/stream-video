@@ -28,7 +28,7 @@ const Login = () => {
                                 <Button onClick={() => {}} title="Log In" />
                             </div>
                             <div className="text-primary flex gap-2">
-                                <Link href={'/'}>Register</Link>
+                                <Link href={'/accounts/register'}>Register</Link>
                                 <span className="text-white">|</span>
                                 <Link href={'/'}>Lost your password</Link>
                             </div>

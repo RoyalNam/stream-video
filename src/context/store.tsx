@@ -1,5 +1,5 @@
 'use client';
-import { getCertification, getGenres } from '@/service/genres';
+import { getCertification, getGenres } from '@/service/other';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
 interface LocalStorageData {

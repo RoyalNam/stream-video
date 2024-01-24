@@ -1,19 +1,23 @@
 'use client';
-import SliderVideo from '@/components/SliderVideo';
+import Button from '@/components/Button';
+import { createRequestToken, createSession } from '@/service/list';
 import React from 'react';
-import Slider from 'react-slick';
 
 const MyList = () => {
-    const settings = {
-        dots: true,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 1,
-        // slidesToScroll: 1,
-    };
     return (
-        <div className="w-full">
-            <h2>My list</h2>
+        <div className="w-full my-6">
+            <div className="flex justify-between items-center">
+                <h4 className="text-3xl font-semibold capitalize">My list</h4>
+                <Button
+                    title="Create list"
+                    onClick={async () => {
+                        console.log('requestToken', await createSession());
+                    }}
+                />
+            </div>
+            <div>
+                <span>You haven't created any lists.</span>
+            </div>
         </div>
     );
 };

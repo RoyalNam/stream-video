@@ -1,20 +1,20 @@
 'use client';
 import React, { useState } from 'react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Tippy from '@tippyjs/react/headless';
-import { FaAlignJustify, FaSearch, FaSignInAlt, FaUpload, FaUser } from 'react-icons/fa';
+import { FaAlignJustify, FaSignInAlt, FaUpload, FaUser } from 'react-icons/fa';
 import { IoClose } from 'react-icons/io5';
 
 import { useGenresOrCertificationData } from '@/context/store';
+import Search from './Search';
 
 const Navbar = () => {
     const pathname = usePathname();
+    const router = useRouter();
     const GENRES = useGenresOrCertificationData<GenresProps>();
-
     const [isShowMenu, setShowMenu] = useState(false);
     const [isShowDropDownMenu, setShowDropDownMenu] = useState(false);
-    const [isSearch, setSearch] = useState(false);
 
     const LiNK = [
         { name: 'Home', to: '/' },
@@ -36,6 +36,7 @@ const Navbar = () => {
         { name: 'My List', to: '/my-list' },
     ];
 
+    // Render
     const renderUserDropdown = (
         <div className="flex flex-col rounded overflow-hidden bg-[#0a0e17] shadow-md shadow-cyan-300/50 pt-1 min-w-52">
             {DROP_MENU.map((item, idx) => (
@@ -47,22 +48,6 @@ const Navbar = () => {
         </div>
     );
 
-    const renderSearch = (
-        <search className="border  rounded-xl bg-black w-full  min-w-96">
-            <form className="flex">
-                <input
-                    type="text"
-                    placeholder="Search ..."
-                    title="Search"
-                    className="bg-transparent flex-1 py-3 pl-3 outline-none border-r"
-                />
-                <button type="submit" title="Search" className="px-3">
-                    <FaSearch />
-                </button>
-            </form>
-            <div className="bg-white h-72 w-full"></div>
-        </search>
-    );
     const renderMobileMenu = (
         <div className="fixed inset-0 z-20 select-none">
             <div className="absolute inset-0 z-20 bg-black/70" onClick={() => setShowMenu(false)} />
@@ -72,9 +57,10 @@ const Navbar = () => {
                 </button>
                 <div className="flex flex-col mt-4 gap-3">
                     {LiNK.map((item, idx) => (
-                        <Link
+                        <div
+                            onClick={!item.children ? () => router.push(item.to) : () => {}}
                             key={idx}
-                            href={item.to}
+                            // href={item.to}
                             className={`px-4 font-medium ${!item.children && 'hover:text-primary'}`}
                         >
                             <span>{item.name}</span>
@@ -87,12 +73,13 @@ const Navbar = () => {
                                     ))}
                                 </div>
                             )}
-                        </Link>
+                        </div>
                     ))}
                 </div>
             </div>
         </div>
     );
+
     const renderMainMenu = (
         <div className="mr-4 hidden lg:flex">
             {LiNK.map((item, idx) =>
@@ -150,6 +137,7 @@ const Navbar = () => {
         </div>
     );
 
+    //
     return (
         <nav className="bg-[#141b29]/95 sticky top-0 w-full z-50">
             <div className="w-full max-w-8xl mx-auto flex items-center justify-between min-h-20 px-4">
@@ -158,11 +146,7 @@ const Navbar = () => {
                 </a>
                 <div className="flex items-center h-full gap-4">
                     {renderMainMenu}
-                    <Tippy placement="bottom-end" visible={false} interactive render={() => renderSearch}>
-                        <button type="submit" title="Search" className="px-3">
-                            <FaSearch />
-                        </button>
-                    </Tippy>
+                    <Search />
                     <Tippy
                         interactive
                         visible={isShowDropDownMenu}

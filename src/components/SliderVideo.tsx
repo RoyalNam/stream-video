@@ -13,7 +13,7 @@ const SliderVideo = ({ item, handleWatchTrailer }: { item: MovieBaseProps; handl
 
     const renderMovieInfo = (
         <div className="flex-1 flex flex-col gap-4">
-            <h3 className="text-xl text-white font-semibold uppercase border-l-2 border-primary pl-2">
+            <h3 className="text-xl text-white font-semibold uppercase border-l-2 border-primary/50 pl-2">
                 {item.media_type}
             </h3>
             <h4 className="text-5xl text-white font-semibold uppercase">{item.title}</h4>
@@ -33,7 +33,7 @@ const SliderVideo = ({ item, handleWatchTrailer }: { item: MovieBaseProps; handl
             </div>
             <div className="flex items-center">
                 <div className="relative flex items-center gap-1">
-                    <span className="border-b">{item.vote_average.toFixed(1)}</span>
+                    <span>{item.vote_average.toFixed(1)}</span>
                     <span className="dot mr-4">
                         <FaStar className="text-lg text-yellow-300" />
                     </span>

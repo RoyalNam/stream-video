@@ -1,4 +1,7 @@
-interface DiscoverOptions {
+export type MovieCategory = 'now_playing' | 'popular' | 'top_rated' | 'upcoming';
+export type MovieEndpoint = 'credits' | 'keywords' | 'reviews' | 'similar' | 'translations' | 'videos';
+
+export interface DiscoverOptions {
     certification_gte?: string;
     certification_lte?: string;
     certification_country?: string;
@@ -36,4 +39,9 @@ interface DiscoverOptions {
     without_keywords?: string;
     without_watch_providers?: string;
     year?: number;
+}
+interface RequestTokenProps {
+    success: boolean;
+    expires_at: Date;
+    request_token: string;
 }
