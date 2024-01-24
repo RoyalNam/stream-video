@@ -1,5 +1,7 @@
 import React from 'react';
 
-export const AddList = () => {
+const AddList = () => {
     return <div>AddList</div>;
 };
+
+export default AddList;
