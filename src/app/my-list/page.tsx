@@ -1,6 +1,6 @@
 'use client';
 import Button from '@/components/Button';
-import { createRequestToken, createSession } from '@/service/list';
+import { createSession } from '@/service/list';
 import React from 'react';
 
 const MyList = () => {
@@ -16,7 +16,7 @@ const MyList = () => {
                 />
             </div>
             <div>
-                <span>You haven't created any lists.</span>
+                <span>You haven&quot;t created any lists.</span>
             </div>
         </div>
     );
