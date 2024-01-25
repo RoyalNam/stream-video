@@ -1,9 +1,8 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { FaStar } from 'react-icons/fa';
-import Image from 'next/image';
 import Button from '@/components/Button';
 import ErrorDisplay from '@/components/ErrorDisplay';
 import MoviesGrid from '@/components/MoviesGrid';
@@ -12,6 +11,8 @@ import { getMovieDetail, getMovieWithEndpoint } from '@/service/movie';
 
 const SingleMovie = () => {
     const { movieId } = useParams();
+    const router = useRouter();
+
     const [movieDetail, setMovieDetail] = useState<MovieDetailProps>();
     const [movieVideo, setMovieVideo] = useState<VideoProps>();
     const [moviesSimilar, setMovieSimilar] = useState<MovieBaseProps[]>([]);
@@ -56,7 +57,9 @@ const SingleMovie = () => {
         setMovieSimilar((prevData) => [...prevData, ...newSimilarData]);
         setCurrentPage(newPage);
     };
-
+    const handlePush = (person_id: number) => {
+        router.push(`/people/${person_id}`);
+    };
     // Render
     const renderVideoSection = (
         <div className="w-full flex flex-col items-center justify-center relative">
@@ -134,7 +137,7 @@ const SingleMovie = () => {
                                     key={item.id}
                                     className="flex-shrink-0 mb-4 w-36 rounded-2xl overflow-hidden shadow shadow-white h-72"
                                 >
-                                    <Link href={`${item.cast_id}`}>
+                                    <div onClick={() => handlePush(Number(item.id))} className="cursor-pointer">
                                         <img
                                             alt={item.name}
                                             className="object-top object-cover w-full h-48"
@@ -144,14 +147,14 @@ const SingleMovie = () => {
                                                     : '/userDefault.png'
                                             }
                                         />
-                                    </Link>
+                                    </div>
                                     <div className="px-2 pt-2 text-sm">
-                                        <Link
-                                            href={`${item.cast_id}`}
-                                            className="font-semibold hover:underline line-clamp-2 mb-1"
+                                        <div
+                                            onClick={() => handlePush(Number(item.credit_id))}
+                                            className="font-semibold cursor-pointer hover:underline line-clamp-2 mb-1"
                                         >
                                             {item.name}
-                                        </Link>
+                                        </div>
                                         <h5 className="font-light text-xs line-clamp-2">{item.character}</h5>
                                     </div>
                                 </div>

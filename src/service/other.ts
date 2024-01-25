@@ -1,17 +1,9 @@
-import { ACCESS_TOKEN_AUTH, BASE_URL } from '@/constants';
-import axios from 'axios';
-
-const options = {
-    method: 'GET',
-    headers: {
-        accept: 'application/json',
-        Authorization: `Bearer ${ACCESS_TOKEN_AUTH}`,
-    },
-};
+import { BASE_URL } from '@/constants';
+import { axiosInstance } from './instance';
 
 export const getGenres = async () => {
     try {
-        const response = await axios.get(`${BASE_URL}/genre/movie/list`, options);
+        const response = await axiosInstance.get(`${BASE_URL}/genre/movie/list`);
         return response.data.genres;
     } catch (err) {
         throw err;
@@ -20,7 +12,7 @@ export const getGenres = async () => {
 
 export const getCertification = async () => {
     try {
-        const resp = await axios.get(`${BASE_URL}/certification/movie/list`, options);
+        const resp = await axiosInstance.get(`${BASE_URL}/certification/movie/list`);
         return resp.data.certifications;
     } catch (err) {
         throw err;

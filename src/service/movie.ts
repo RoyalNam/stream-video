@@ -1,14 +1,8 @@
-import axios, { AxiosInstance } from 'axios';
-import { ACCESS_TOKEN_AUTH, BASE_URL } from '@/constants';
+import { BASE_URL } from '@/constants';
 import { DiscoverOptions, MovieCategory, MovieEndpoint } from '@/types/options';
+import { axiosInstance } from './instance';
 
 const VIDEO_BASE_URL = `${BASE_URL}/movie`;
-const axiosInstance: AxiosInstance = axios.create({
-    headers: {
-        accept: 'application/json',
-        Authorization: `Bearer ${ACCESS_TOKEN_AUTH}`,
-    },
-});
 
 export const getMovieDetail = async ({ movie_id }: { movie_id: number }) => {
     try {
@@ -83,5 +77,3 @@ export const searchMovies = async ({ query, num_page = 1 }: { query: string; num
         throw err;
     }
 };
-
-// Add, delete rating

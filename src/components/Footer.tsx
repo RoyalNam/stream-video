@@ -28,7 +28,13 @@ const Footer = () => {
                 <p>Follow me on social media to find out the latest updated on our progress</p>
                 <div className="flex gap-3">
                     {SOCIAL_LINK.map((item) => (
-                        <Link key={item.to} className="text-2xl hover:scale-110" href={item.to}>
+                        <Link
+                            key={item.to}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-2xl hover:scale-110"
+                            href={item.to}
+                        >
                             {item.icon}
                         </Link>
                     ))}

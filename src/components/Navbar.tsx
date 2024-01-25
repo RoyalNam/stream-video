@@ -33,7 +33,7 @@ const Navbar = () => {
             to: '/movies/genres/#',
             children: GENRES && GENRES.map((item) => ({ name: item.name, to: `/movies/genres/${item.name}` })),
         },
-        { name: 'My List', to: '/my-list' },
+        { name: 'Popular People', to: '/people' },
     ];
 
     // Render

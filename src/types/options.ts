@@ -40,8 +40,3 @@ export interface DiscoverOptions {
     without_watch_providers?: string;
     year?: number;
 }
-interface RequestTokenProps {
-    success: boolean;
-    expires_at: Date;
-    request_token: string;
-}
